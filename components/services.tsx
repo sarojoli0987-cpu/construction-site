@@ -52,7 +52,7 @@ export default function Services() {
                 >
                   {title}
                 </h3>
-                <p className="mt-4 text-sm leading-relaxed text-[#1B2530]/70 md:text-base">
+                <p className="mt-4 text-base leading-relaxed text-[#1B2530]/70 md:text-lg">
                   {description}
                 </p>
               </div>

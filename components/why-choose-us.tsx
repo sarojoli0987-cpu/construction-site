@@ -41,10 +41,12 @@ export default function WhyChooseUs() {
     <section className="border-y border-[#1B2530]/15 bg-[#F2F1ED]">
       <div className="mx-auto max-w-7xl px-5 py-20 md:py-28">
         <div className="max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#1F4E79]">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#1F4E79] md:text-sm">
             Why Choose Us
           </p>
-          <h2 className={`${heading} mt-4 text-4xl font-bold leading-tight md:text-5xl`}>
+          <h2
+            className={`${heading} mt-4 text-4xl font-bold leading-tight md:text-5xl`}
+          >
             Built Around Quality and Responsibility.
           </h2>
         </div>
@@ -53,10 +55,12 @@ export default function WhyChooseUs() {
           {reasons.map(({ icon: Icon, title, text }) => (
             <div key={title} className="bg-[#F2F1ED] p-6">
               <Icon size={26} weight="duotone" className="text-[#1F4E79]" />
-              <h3 className={`${heading} mt-5 text-lg font-semibold leading-snug`}>
+              <h3
+                className={`${heading} mt-5 text-xl font-semibold leading-snug md:text-2xl`}
+              >
                 {title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#1B2530]/70">
+              <p className="mt-2 text-sm leading-relaxed text-[#1B2530]/70 md:text-base">
                 {text}
               </p>
             </div>

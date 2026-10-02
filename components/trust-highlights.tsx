@@ -47,7 +47,7 @@ export default function TrustHighlights() {
             <div key={title} className="flex flex-col">
               <Icon size={28} weight="duotone" className="text-[#F2B705]" />
               <h3 className={`${heading} mt-4 text-xl font-semibold`}>{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#1B2530]/70">
+              <p className="mt-2 text-base leading-relaxed text-[#1B2530]/70">
                 {text}
               </p>
             </div>

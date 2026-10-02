@@ -140,3 +140,14 @@ html {
     scroll-behavior: auto;
   }
 }
+/* Slightly larger base text for better readability */
+body {
+  font-size: 1.0625rem; /* = 17px, was 16px */
+  line-height: 1.7;
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 1.125rem; /* = 18px on desktop */
+  }
+}

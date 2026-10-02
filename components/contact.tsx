@@ -10,7 +10,7 @@ export default function Contact() {
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 md:py-28 lg:grid-cols-2 lg:gap-16">
         {/* Left: details */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#1F4E79]">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#1F4E79] md:text-sm">
             Contact Us
           </p>
           <h2
@@ -18,7 +18,7 @@ export default function Contact() {
           >
             Let's Discuss Your Project.
           </h2>
-          <p className="mt-5 max-w-md leading-relaxed text-[#1B2530]/70">
+          <p className="mt-5 max-w-md text-base leading-relaxed text-[#1B2530]/70 md:text-lg">
             Send us a message and we will reply within one working day.
           </p>
 
@@ -31,7 +31,7 @@ export default function Contact() {
                 </p>
                 <a
                   href={`tel:${company.phone}`}
-                  className="text-lg font-medium transition-colors hover:text-[#1F4E79]"
+                  className="text-lg font-medium transition-colors hover:text-[#1F4E79] md:text-xl"
                 >
                   {company.phoneDisplay}
                 </a>
@@ -49,7 +49,7 @@ export default function Contact() {
                 </p>
                 <a
                   href={`mailto:${company.email}`}
-                  className="text-lg font-medium transition-colors hover:text-[#1F4E79]"
+                  className="text-lg font-medium transition-colors hover:text-[#1F4E79] md:text-xl"
                 >
                   {company.email}
                 </a>
@@ -61,7 +61,7 @@ export default function Contact() {
                 <p className="text-xs uppercase tracking-widest text-[#1B2530]/50">
                   Address
                 </p>
-                <p className="text-lg font-medium">{company.address}</p>
+                <p className="text-lg font-medium md:text-xl">{company.address}</p>
               </div>
             </li>
           </ul>
