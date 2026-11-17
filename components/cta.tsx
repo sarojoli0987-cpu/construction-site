@@ -10,7 +10,9 @@ export default function CTA() {
       <div className="mx-auto max-w-7xl px-5 py-20 md:py-24">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className={`${heading} text-4xl font-bold leading-tight md:text-5xl`}>
+            <h2
+              className={`${heading} text-4xl font-bold leading-tight md:text-5xl`}
+            >
               Let's Build Something That Lasts.
             </h2>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-white/85 md:text-lg">
@@ -20,20 +22,20 @@ export default function CTA() {
           </div>
 
           <div className="flex flex-wrap gap-3 lg:justify-end">
-            <Button size="lg" variant="secondary" asChild>
+            <Button size="lg" variant="secondary" asChild className="text-base md:text-lg">
               <a href="#contact" className="gap-2">
-                Contact Us <ArrowRight size={18} weight="bold" />
-              </a>
+                Contact Us <ArrowRight size={20} weight="bold" />
+             </a>
             </Button>
             <Button
-              size="lg"
-              variant="outline"
-              asChild
-              className="border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
-            >
-              <a href={`tel:${company.phone}`} className="gap-2">
-                <Phone size={18} weight="bold" /> Call {company.phoneDisplay}
-              </a>
+                size="lg"
+                variant="outline"
+                asChild
+                className="border-white/40 bg-transparent text-base text-white hover:bg-white/10 hover:text-white md:text-lg"
+              >
+                <a href={`tel:${company.phone}`} className="gap-2">
+                    <Phone size={20} weight="bold" /> Call {company.phoneDisplay}
+                 </a>
             </Button>
           </div>
         </div>

@@ -1,78 +1,165 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-
-const field =
-  "w-full rounded-md border border-[#1B2530]/30 bg-white px-3 py-2 text-base outline-none focus:border-[#1F4E79] focus:ring-2 focus:ring-[#1F4E79]/30";
-
-const label = "mb-2 block text-base font-medium";
 
 export default function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
-    "idle"
-  );
+  const [name, setName] = useState("");
+  const [contactInfo, setContactInfo] = useState("");
+  const [message, setMessage] = useState(""); // NEW: State for project details
+  const [error, setError] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value;
+    setError("");
+
+    if (/[a-zA-Z@.]/.test(rawValue)) {
+      setContactInfo(rawValue);
+      return;
+    }
+
+    const numericValue = rawValue.replace(/[^0-9]/g, "");
+    if (numericValue.length <= 10) {
+      setContactInfo(numericValue);
+    }
+  };
+
+  const validateContactInfo = () => {
+    if (contactInfo.length === 0) return;
+    const hasLetters = /[a-zA-Z]/.test(contactInfo);
+
+    if (hasLetters) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(contactInfo)) {
+        setError("Please enter a valid email address");
+      } else {
+        setError("");
+      }
+    } else {
+      if (contactInfo.length > 0 && contactInfo.length < 10) {
+        setError("The number cannot be less than 10 digits");
+      } else if (contactInfo.length === 10) {
+        setError("");
+      }
+    }
+  };
+
+  // UPDATED: Now actually sends data to the API
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    setStatus("sending");
+
+    // Validation checks
+    if (contactInfo.length === 0) {
+      setError("This field is required");
+      return;
+    }
+
+    const hasLetters = /[a-zA-Z]/.test(contactInfo);
+    if (hasLetters) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(contactInfo)) {
+        setError("Please enter a valid email address");
+        return;
+      }
+    } else {
+      if (contactInfo.length !== 10) {
+        setError("The number must be exactly 10 digits");
+        return;
+      }
+    }
+
+    setError("");
+    
     try {
-      const res = await fetch("/api/contact", {
+      // Send data to the backend API
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        body: JSON.stringify({
+          name: name,
+          contact: contactInfo,
+          message: message,
+        }),
       });
-      if (!res.ok) throw new Error();
-      form.reset();
-      setStatus("sent");
-    } catch {
-      setStatus("error");
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        // Reset form
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setName("");
+          setContactInfo("");
+          setMessage("");
+        }, 5000);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      setError("Failed to send message.");
     }
-  }
+  };
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
+    <form 
+      onSubmit={handleSubmit} 
+      className="flex w-full flex-col gap-6 bg-[#F2F1ED] p-8 md:p-12"
+    >
       <div>
-        <label htmlFor="name" className={label}>
+        <label htmlFor="name" className="mb-2 block text-[1.1rem] text-[#1B2530]">
           Your name
         </label>
-        <input id="name" name="name" required className={field} />
+        <input
+          type="text"
+          id="name"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)} // Connect to state
+          className="w-full rounded-lg border border-[#1B2530]/30 bg-white px-4 py-3 text-[#1B2530] outline-none transition-colors focus:border-[#1F4E79]"
+        />
       </div>
+
       <div>
-        <label htmlFor="phone" className={label}>
+        <label htmlFor="contact" className="mb-2 block text-[1.1rem] text-[#1B2530]">
           Phone or email
         </label>
-        <input id="phone" name="contact" required className={field} />
+        <input
+          type="text" 
+          id="contact"
+          value={contactInfo}
+          onChange={handleContactChange}
+          onBlur={validateContactInfo}
+          required
+          className={`w-full rounded-lg border bg-white px-4 py-3 text-[#1B2530] outline-none transition-colors focus:border-[#1F4E79] ${
+            error ? "border-red-500" : "border-[#1B2530]/30"
+          }`}
+        />
+        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
       </div>
+
       <div>
-        <label htmlFor="message" className={label}>
+        <label htmlFor="details" className="mb-2 block text-[1.1rem] text-[#1B2530]">
           Project details
         </label>
         <textarea
-          id="message"
-          name="message"
+          id="details"
+          rows={6}
           required
-          rows={5}
-          className={field}
-        />
+          value={message}
+          onChange={(e) => setMessage(e.target.value)} // Connect to state
+          className="w-full resize-y rounded-lg border border-[#1B2530]/30 bg-white px-4 py-3 text-[#1B2530] outline-none transition-colors focus:border-[#1F4E79]"
+        ></textarea>
       </div>
-<Button
-  type="submit"
-  size="lg"
-  disabled={status === "sending"}
-  className="text-base md:text-lg"
->
-  {status === "sending" ? "Sending..." : "Send message"}
-</Button>
-      {status === "sent" && (
-        <p className="text-green-700">
+
+      <button
+        type="submit"
+        className="mt-2 w-fit rounded-lg bg-black px-6 py-3 text-[1.1rem] text-white transition-opacity hover:opacity-80"
+      >
+        Send message
+      </button>
+
+      {isSubmitted && (
+        <p className="mt-2 text-[1.1rem] text-green-700">
           Message sent. We will contact you soon.
-        </p>
-      )}
-      {status === "error" && (
-        <p className="text-red-700">
-          The message was not sent. Check your connection and try again.
         </p>
       )}
     </form>
